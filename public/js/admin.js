@@ -4,6 +4,8 @@ const emptyState = document.getElementById('emptyState');
 const activityList = document.getElementById('activityList');
 
 let complaints = [];
+let allComplaints = null; // cache of full complaints fetched from server
+let currentSort = { key: 'created_at', dir: 'desc' };
 let chart = null;
 
 function setLoading(isLoading) {
@@ -131,28 +133,49 @@ async function loadProfile() {
   const user = result.user;
   document.getElementById('profileBadge').textContent = `${user.name} (${user.role})`;
 }
-
-async function loadComplaints() {
-  const search = document.getElementById('searchInput').value.trim();
-  const category = document.getElementById('filterCategory').value;
-  const status = document.getElementById('filterStatus').value;
-
-  const params = new URLSearchParams();
-  if (search) params.set('search', search);
-  if (category) params.set('category', category);
-  if (status) params.set('status', status);
-
+async function fetchAllComplaints() {
   setLoading(true);
   try {
-    const result = await apiFetch(`/api/admin/complaints?${params.toString()}`);
+    const result = await apiFetch('/api/admin/complaints');
     if (!result) return;
-    complaints = result.complaints;
-    renderTable(complaints);
+    allComplaints = result.complaints || [];
+    complaints = [...allComplaints];
+    applyFiltersAndRender();
   } catch (error) {
     showToast(error.message, 'error');
   } finally {
     setLoading(false);
   }
+}
+
+function applyFiltersAndRender() {
+  if (!Array.isArray(allComplaints)) return;
+  const search = document.getElementById('searchInput').value.trim().toLowerCase();
+  const category = document.getElementById('filterCategory').value;
+  const status = document.getElementById('filterStatus').value;
+
+  complaints = allComplaints.filter((c) => {
+    if (search && !String(c.title || '').toLowerCase().includes(search)) return false;
+    if (category && category !== '' && c.category !== category) return false;
+    if (status && status !== '' && c.status !== status) return false;
+    return true;
+  });
+
+  // apply sorting
+  complaints.sort((a, b) => {
+    const key = currentSort.key;
+    let av = a[key];
+    let bv = b[key];
+    if (key === 'created_at') {
+      av = new Date(av).getTime();
+      bv = new Date(bv).getTime();
+    }
+    if (av < bv) return currentSort.dir === 'asc' ? -1 : 1;
+    if (av > bv) return currentSort.dir === 'asc' ? 1 : -1;
+    return 0;
+  });
+
+  renderTable(complaints);
 }
 
 async function logout() {
@@ -227,9 +250,30 @@ function bindEvents() {
   document.getElementById('logoutBtn').addEventListener('click', logout);
   document.getElementById('exportCsvBtn').addEventListener('click', exportCsv);
 
-  document.getElementById('searchInput').addEventListener('input', debounce(loadComplaints, 300));
-  document.getElementById('filterCategory').addEventListener('change', loadComplaints);
-  document.getElementById('filterStatus').addEventListener('change', loadComplaints);
+  document.getElementById('searchInput').addEventListener('input', debounce(applyFiltersAndRender, 300));
+  document.getElementById('filterCategory').addEventListener('change', applyFiltersAndRender);
+  document.getElementById('filterStatus').addEventListener('change', applyFiltersAndRender);
+
+  // allow sorting by clicking table headers (ID, Date)
+  const table = document.querySelector('.table-wrap table');
+  if (table) {
+    const ths = table.querySelectorAll('th');
+    ths.forEach((th) => {
+      th.style.cursor = 'pointer';
+      th.addEventListener('click', () => {
+        const keyMap = { 'ID': 'id', 'Date': 'created_at' };
+        const key = keyMap[th.textContent.trim()] || null;
+        if (!key) return;
+        if (currentSort.key === key) {
+          currentSort.dir = currentSort.dir === 'asc' ? 'desc' : 'asc';
+        } else {
+          currentSort.key = key;
+          currentSort.dir = 'desc';
+        }
+        applyFiltersAndRender();
+      });
+    });
+  }
 
   tableBody.addEventListener('click', handleRowAction);
 }
@@ -237,7 +281,7 @@ function bindEvents() {
 async function init() {
   bindEvents();
   try {
-    await Promise.all([loadProfile(), loadStatsAndChart(), loadComplaints(), loadActivities()]);
+    await Promise.all([loadProfile(), loadStatsAndChart(), fetchAllComplaints(), loadActivities()]);
   } catch (error) {
     showToast(error.message, 'error');
   }
