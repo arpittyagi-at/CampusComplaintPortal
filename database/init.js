@@ -29,10 +29,21 @@ async function createTables() {
   await run(`
     CREATE TABLE IF NOT EXISTS activity_logs (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
+      user_id INTEGER,
       action TEXT NOT NULL,
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP
     )
   `);
+}
+
+async function ensureActivityLogUserColumn() {
+  try {
+    await run('ALTER TABLE activity_logs ADD COLUMN user_id INTEGER');
+  } catch (error) {
+    if (!String(error?.message || '').toLowerCase().includes('duplicate column')) {
+      throw error;
+    }
+  }
 }
 
 async function seedAdmin() {
@@ -45,7 +56,7 @@ async function seedAdmin() {
       'INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)',
       ['Campus Admin', adminEmail, hashedPassword, 'admin']
     );
-    await run('INSERT INTO activity_logs (action) VALUES (?)', ['Seeded default admin account']);
+    await run('INSERT INTO activity_logs (action, user_id) VALUES (?, ?)', ['Seeded default admin account', null]);
   }
 }
 
@@ -206,13 +217,15 @@ async function seedDemoData() {
     );
   }
 
-  await run('INSERT INTO activity_logs (action) VALUES (?)', [
-    'Seeded demo students and dummy complaints'
+  await run('INSERT INTO activity_logs (action, user_id) VALUES (?, ?)', [
+    'Seeded demo students and dummy complaints',
+    null
   ]);
 }
 
 async function initializeDatabase() {
   await createTables();
+  await ensureActivityLogUserColumn();
   await seedAdmin();
   await seedDemoData();
 }

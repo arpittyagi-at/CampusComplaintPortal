@@ -16,7 +16,11 @@ function findUserById(id) {
 }
 
 function updateUserProfile(id, { name, email }) {
-  return run('UPDATE users SET name = ?, email = ? WHERE id = ?', [name, email.toLowerCase(), id]);
+  if (email) {
+    return run('UPDATE users SET name = ?, email = ? WHERE id = ?', [name, email.toLowerCase(), id]);
+  }
+
+  return run('UPDATE users SET name = ? WHERE id = ?', [name, id]);
 }
 
 module.exports = {

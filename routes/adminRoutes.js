@@ -49,7 +49,8 @@ router.put('/complaints/:id', async (req, res) => {
     await logActivity(
       `Admin ${req.session.user.email} updated complaint #${complaintId} (${status || complaint.status}, ${
         priority || complaint.priority
-      })`
+      })`,
+      req.session.user.id
     );
 
     return res.json({ message: 'Complaint updated successfully' });
@@ -68,7 +69,7 @@ router.delete('/complaints/:id', async (req, res) => {
     }
 
     await deleteComplaint(complaintId);
-    await logActivity(`Admin ${req.session.user.email} deleted complaint #${complaintId}`);
+    await logActivity(`Admin ${req.session.user.email} deleted complaint #${complaintId}`, req.session.user.id);
 
     return res.json({ message: 'Complaint deleted successfully' });
   } catch (error) {

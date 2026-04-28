@@ -179,17 +179,16 @@ async function submitComplaint(event) {
 async function updateProfile(event) {
   event.preventDefault();
   const name = document.getElementById('profileName').value.trim();
-  const email = document.getElementById('profileEmail').value.trim();
 
-  if (!name || !email) {
-    showToast('Name and email are required', 'error');
+  if (!name) {
+    showToast('Name is required', 'error');
     return;
   }
 
   try {
     await apiFetch('/api/auth/profile', {
       method: 'PUT',
-      body: { name, email }
+      body: { name }
     });
     document.getElementById('profileBadge').textContent = `${name} (student)`;
     showToast('Profile updated');

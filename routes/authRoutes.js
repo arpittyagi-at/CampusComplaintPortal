@@ -35,7 +35,7 @@ router.post('/signup', async (req, res) => {
     const user = await findUserById(result.id);
     req.session.user = user;
 
-    await logActivity(`New student signup: ${email.toLowerCase()}`);
+    await logActivity(`New student signup: ${email.toLowerCase()}`, result.id);
 
     return res.status(201).json({ message: 'Signup successful', user });
   } catch (error) {
@@ -68,7 +68,7 @@ router.post('/login', async (req, res) => {
       role: user.role
     };
 
-    await logActivity(`User login: ${user.email}`);
+    await logActivity(`User login: ${user.email}`, user.id);
 
     return res.json({
       message: 'Login successful',
@@ -86,20 +86,18 @@ router.get('/me', ensureAuthenticated, (req, res) => {
 router.put('/profile', ensureAuthenticated, async (req, res) => {
   try {
     const { name, email } = req.body;
-    if (!name || !email) {
-      return res.status(400).json({ error: 'Name and email are required' });
+    if (!name) {
+      return res.status(400).json({ error: 'Name is required' });
     }
 
-    const existing = await findUserByEmail(email);
-    if (existing && existing.id !== req.session.user.id) {
-      return res.status(400).json({ error: 'Email already in use' });
+    if (email && email.toLowerCase() !== req.session.user.email.toLowerCase()) {
+      return res.status(400).json({ error: 'Email cannot be changed' });
     }
 
-    await updateUserProfile(req.session.user.id, { name, email });
+    await updateUserProfile(req.session.user.id, { name });
     req.session.user.name = name;
-    req.session.user.email = email.toLowerCase();
 
-    await logActivity(`Profile updated: ${email.toLowerCase()}`);
+    await logActivity(`Profile updated: ${req.session.user.email}`, req.session.user.id);
 
     return res.json({ message: 'Profile updated', user: req.session.user });
   } catch (error) {
@@ -108,10 +106,11 @@ router.put('/profile', ensureAuthenticated, async (req, res) => {
 });
 
 router.post('/logout', ensureAuthenticated, async (req, res) => {
+  const userId = req.session.user?.id || null;
   const userEmail = req.session.user?.email;
   req.session.destroy(async () => {
     if (userEmail) {
-      await logActivity(`User logout: ${userEmail}`);
+      await logActivity(`User logout: ${userEmail}`, userId);
     }
     res.json({ message: 'Logged out successfully' });
   });

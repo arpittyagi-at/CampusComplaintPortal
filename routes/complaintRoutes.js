@@ -8,7 +8,7 @@ const {
   deleteComplaint,
   getStudentStats
 } = require('../models/complaintModel');
-const { getRecentActivities, logActivity } = require('../models/activityModel');
+const { getRecentActivitiesByUser, logActivity } = require('../models/activityModel');
 const { ensureStudent } = require('../middleware/auth');
 
 const router = express.Router();
@@ -66,7 +66,7 @@ router.post('/', async (req, res) => {
       description
     });
 
-    await logActivity(`Complaint created by ${req.session.user.email}: #${result.id}`);
+    await logActivity(`Complaint created by ${req.session.user.email}: #${result.id}`, req.session.user.id);
 
     return res.status(201).json({ message: 'Complaint submitted', id: result.id });
   } catch (error) {
@@ -102,7 +102,7 @@ router.put('/:id', async (req, res) => {
       description
     });
 
-    await logActivity(`Complaint updated by ${req.session.user.email}: #${complaintId}`);
+    await logActivity(`Complaint updated by ${req.session.user.email}: #${complaintId}`, req.session.user.id);
 
     return res.json({ message: 'Complaint updated' });
   } catch (error) {
@@ -124,7 +124,7 @@ router.delete('/:id', async (req, res) => {
     }
 
     await deleteComplaint(complaintId);
-    await logActivity(`Complaint deleted by ${req.session.user.email}: #${complaintId}`);
+    await logActivity(`Complaint deleted by ${req.session.user.email}: #${complaintId}`, req.session.user.id);
 
     return res.json({ message: 'Complaint deleted' });
   } catch (error) {
@@ -150,7 +150,7 @@ router.get('/stats/summary', async (req, res) => {
 
 router.get('/activity/recent', async (req, res) => {
   try {
-    const activities = await getRecentActivities(8);
+    const activities = await getRecentActivitiesByUser(req.session.user.id, 8);
     return res.json({ activities });
   } catch (error) {
     return res.status(500).json({ error: 'Failed to fetch activities' });
