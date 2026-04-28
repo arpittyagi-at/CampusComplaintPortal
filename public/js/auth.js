@@ -15,6 +15,11 @@ async function handleLogin(event) {
       body: { email, password }
     });
 
+    if (!result || !result.user) {
+      showToast('Login failed. Please try again.', 'error');
+      return;
+    }
+
     showToast(result.message || 'Login successful');
     window.location.href = result.user.role === 'admin' ? '/admin' : '/dashboard';
   } catch (error) {
