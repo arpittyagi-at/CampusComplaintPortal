@@ -1,12 +1,13 @@
 const tableBody = document.getElementById('complaintsTableBody');
 const loader = document.getElementById('tableLoader');
 const emptyState = document.getElementById('emptyState');
-const notificationList = document.getElementById('notificationList');
+const urgentList = document.getElementById('urgentList');
 const complaintCategorySelect = document.getElementById('complaintCategory');
 const otherCategoryGroup = document.getElementById('otherCategoryGroup');
 const otherCategoryInput = document.getElementById('otherCategory');
 
 let complaintState = [];
+let allComplaints = [];
 
 function setLoading(isLoading) {
   loader.classList.toggle('hidden', !isLoading);
@@ -88,22 +89,32 @@ async function loadProfile() {
   document.getElementById('profileEmail').value = user.email;
 }
 
-async function loadActivities() {
-  const result = await apiFetch('/api/complaints/activity/recent');
-  if (!result) return;
+async function loadUrgentComplaints() {
+  if (!allComplaints.length) {
+    const result = await apiFetch('/api/complaints');
+    if (!result) return;
+    allComplaints = result.complaints || [];
+  }
 
-  notificationList.innerHTML = '';
-  if (!result.activities.length) {
+  const urgentComplaints = allComplaints.filter(
+    (c) => c.status === 'Pending' || c.priority === 'High'
+  );
+
+  urgentList.innerHTML = '';
+  if (!urgentComplaints.length) {
     const li = document.createElement('li');
-    li.textContent = 'No notifications yet.';
-    notificationList.appendChild(li);
+    li.textContent = 'All caught up! No urgent complaints.';
+    li.style.color = 'var(--muted)';
+    urgentList.appendChild(li);
     return;
   }
 
-  result.activities.forEach((item) => {
+  urgentComplaints.slice(0, 5).forEach((item) => {
     const li = document.createElement('li');
-    li.innerHTML = `<span>${item.action}</span><span class="muted">${formatDate(item.created_at)}</span>`;
-    notificationList.appendChild(li);
+    const priorityBadge = item.priority === 'High' ? ' <span class="badge high">High</span>' : '';
+    const statusBadge = item.status === 'Pending' ? ' <span class="badge pending">Pending</span>' : ' <span class="badge progress">In Progress</span>';
+    li.innerHTML = `<span><strong>#${item.id}</strong> ${item.title}${priorityBadge}${statusBadge}</span><span class="muted" style="font-size: 0.85rem;">${formatDate(item.created_at)}</span>`;
+    urgentList.appendChild(li);
   });
 }
 
@@ -276,7 +287,7 @@ function bindEvents() {
 async function init() {
   bindEvents();
   try {
-    await Promise.all([loadProfile(), loadStats(), loadComplaints(), loadActivities()]);
+    await Promise.all([loadProfile(), loadStats(), loadComplaints(), loadUrgentComplaints()]);
   } catch (error) {
     showToast(error.message, 'error');
   }
