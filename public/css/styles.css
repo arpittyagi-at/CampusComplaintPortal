@@ -260,10 +260,11 @@ textarea:focus {
   padding: 20px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  min-height: calc(100vh - 36px);
+  justify-content: flex-start;
+  height: calc(100vh - 36px);
   position: sticky;
   top: 18px;
+  overflow-y: auto;
 }
 
 .brand {
@@ -293,6 +294,7 @@ textarea:focus {
 .sidebar-footer {
   display: grid;
   gap: 10px;
+  margin-top: auto;
 }
 
 .main-content {
