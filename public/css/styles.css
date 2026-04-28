@@ -1,19 +1,18 @@
 :root {
-  --bg: #0f1724;
-  --bg-grad-a: #0b1b2b;
-  --bg-grad-b: #07121a;
-  --text: #e6eef8;
-  --muted: #9aa6b2;
-  --card: rgba(20, 28, 38, 0.9);
-  --line: rgba(230, 238, 248, 0.06);
+  --bg: #f5f8fc;
+  --bg-grad-a: #ffffff;
+  --bg-grad-b: #eef4fb;
+  --text: #182132;
+  --muted: #5f6d84;
+  --card: rgba(255, 255, 255, 0.92);
+  --line: rgba(24, 33, 50, 0.08);
   --primary: #0f62fe;
   --primary-dark: #0b4ed6;
   --secondary: #00bfa6;
   --danger: #ff4d6d;
-  --shadow: 0 12px 30px rgba(2, 6, 23, 0.6);
+  --shadow: 0 12px 30px rgba(7, 24, 54, 0.12);
 }
 
-/* keep single dark theme as default for sleek look */
 body.dark {
   --bg: #071021;
   --bg-grad-a: #05121b;
@@ -36,7 +35,7 @@ body {
   min-height: 100%;
   font-family: 'Manrope', sans-serif;
   color: var(--text);
-  background: linear-gradient(180deg, var(--bg-grad-a), var(--bg-grad-b));
+  background: linear-gradient(180deg, var(--bg-grad-a), var(--bg-grad-b)), var(--bg);
 }
 
 a {
