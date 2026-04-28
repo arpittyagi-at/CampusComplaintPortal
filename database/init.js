@@ -82,7 +82,7 @@ async function seedDemoData() {
   const demoComplaints = [
     {
       userIdx: 0,
-      title: 'CMP-DMY-1001 | Classroom C-204 fan not working',
+      title: 'Classroom C-204 fan not working',
       category: 'Electrical',
       description: 'Ceiling fan in Classroom C-204 is non-functional during afternoon lectures.',
       status: 'Pending',
@@ -91,7 +91,7 @@ async function seedDemoData() {
     },
     {
       userIdx: 1,
-      title: 'CMP-DMY-1002 | WiFi dead zone near ECE Lab 2',
+      title: 'WiFi dead zone near ECE Lab 2',
       category: 'WiFi / Network',
       description: 'Very weak WiFi signal and frequent disconnections near ECE Lab 2 corridor.',
       status: 'In Progress',
@@ -100,7 +100,7 @@ async function seedDemoData() {
     },
     {
       userIdx: 2,
-      title: 'CMP-DMY-1003 | Oscilloscope channel B not responding',
+      title: 'Oscilloscope channel B not responding',
       category: 'Lab Equipment',
       description: 'Digital oscilloscope in Lab Bench 7 has channel B permanently stuck at zero.',
       status: 'Pending',
@@ -109,7 +109,7 @@ async function seedDemoData() {
     },
     {
       userIdx: 3,
-      title: 'CMP-DMY-1004 | Hostel Block A water leakage',
+      title: 'Hostel Block A water leakage',
       category: 'Hostel',
       description: 'Leakage from washroom ceiling in Hostel Block A, second floor.',
       status: 'In Progress',
@@ -118,7 +118,7 @@ async function seedDemoData() {
     },
     {
       userIdx: 0,
-      title: 'CMP-DMY-1005 | Dust accumulation in DSP lab',
+      title: 'Dust accumulation in DSP lab',
       category: 'Cleanliness',
       description: 'DSP lab floor and desks need deep cleaning before practical sessions.',
       status: 'Resolved',
@@ -127,7 +127,7 @@ async function seedDemoData() {
     },
     {
       userIdx: 1,
-      title: 'CMP-DMY-1006 | Projector blur in Smart Classroom S-102',
+      title: 'Projector blur in Smart Classroom S-102',
       category: 'Classroom',
       description: 'Projector image in S-102 is blurry and unreadable from back rows.',
       status: 'Pending',
@@ -136,7 +136,7 @@ async function seedDemoData() {
     },
     {
       userIdx: 2,
-      title: 'CMP-DMY-1007 | MATLAB license activation issue',
+      title: 'MATLAB license activation issue',
       category: 'Other',
       description: 'Lab systems show license validation error while launching MATLAB.',
       status: 'Resolved',
@@ -145,7 +145,7 @@ async function seedDemoData() {
     },
     {
       userIdx: 3,
-      title: 'CMP-DMY-1008 | Corridor lights flickering outside Lab 1',
+      title: 'Corridor lights flickering outside Lab 1',
       category: 'Electrical',
       description: 'Three tube lights flicker continuously near ECE Lab 1 corridor.',
       status: 'In Progress',
@@ -154,7 +154,7 @@ async function seedDemoData() {
     },
     {
       userIdx: 0,
-      title: 'CMP-DMY-1009 | Internet outage during evening hours',
+      title: 'Internet outage during evening hours',
       category: 'WiFi / Network',
       description: 'Campus WiFi drops every evening around 7 PM in academic block.',
       status: 'Pending',
@@ -163,7 +163,7 @@ async function seedDemoData() {
     },
     {
       userIdx: 1,
-      title: 'CMP-DMY-1010 | Function generator calibration needed',
+      title: 'Function generator calibration needed',
       category: 'Lab Equipment',
       description: 'Function generator in Communications Lab gives incorrect frequency output.',
       status: 'Resolved',
@@ -172,7 +172,7 @@ async function seedDemoData() {
     },
     {
       userIdx: 2,
-      title: 'CMP-DMY-1011 | Mess area hygiene concern in hostel',
+      title: 'Mess area hygiene concern in hostel',
       category: 'Hostel',
       description: 'Hostel mess serving counter needs regular sanitization and cleanup.',
       status: 'Pending',
@@ -181,7 +181,7 @@ async function seedDemoData() {
     },
     {
       userIdx: 3,
-      title: 'CMP-DMY-1012 | Whiteboard marker trays broken in D-301',
+      title: 'Whiteboard marker trays broken in D-301',
       category: 'Classroom',
       description: 'Both marker trays are broken in D-301 and markers keep falling.',
       status: 'Resolved',
