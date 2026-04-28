@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Campus Portal | Signup</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/public/css/styles.css" />
+</head>
+<body class="auth-page">
+  <div class="aurora-bg"></div>
+  <div class="auth-shell">
+    <div class="auth-brand">
+      <h1>Create Student Account</h1>
+      <p>Raise and track campus service requests with full visibility.</p>
+      <ul>
+        <li>Smart category-based issue tracking</li>
+        <li>Priority and status workflows</li>
+        <li>Centralized notifications</li>
+      </ul>
+    </div>
+
+    <div class="auth-card glass">
+      <h2>Get Started</h2>
+      <p class="muted">Signup takes less than a minute</p>
+
+      <form id="signupForm" class="stack-md">
+        <div class="input-group">
+          <label for="name">Full Name</label>
+          <input id="name" type="text" name="name" placeholder="Your full name" required />
+        </div>
+
+        <div class="input-group">
+          <label for="email">Email</label>
+          <input id="email" type="email" name="email" placeholder="you@college.edu" required />
+        </div>
+
+        <div class="input-group">
+          <label for="password">Password</label>
+          <input id="password" type="password" name="password" minlength="6" placeholder="Minimum 6 characters" required />
+        </div>
+
+        <button type="submit" class="btn btn-primary full">Create Account</button>
+      </form>
+
+      <div class="auth-foot">
+        <span>Already have an account?</span>
+        <a href="/login">Login</a>
+      </div>
+    </div>
+  </div>
+
+  <div id="toastContainer" class="toast-container"></div>
+  <script src="/public/js/common.js"></script>
+  <script src="/public/js/auth.js"></script>
+</body>
+</html>

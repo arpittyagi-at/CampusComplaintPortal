@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Campus Portal | Login</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/public/css/styles.css" />
+</head>
+<body class="auth-page">
+  <div class="aurora-bg"></div>
+  <div class="auth-shell">
+    <div class="auth-brand">
+      <h1>Smart Campus Portal</h1>
+      <p>Complaint and Service Management for modern colleges.</p>
+      <ul>
+        <li>Fast complaint registration</li>
+        <li>Transparent status updates</li>
+        <li>Data-driven admin analytics</li>
+      </ul>
+    </div>
+
+    <div class="auth-card glass">
+      <h2>Welcome Back</h2>
+      <p class="muted">Sign in to continue</p>
+
+      <form id="loginForm" class="stack-md">
+        <div class="input-group">
+          <label for="email">Email</label>
+          <input id="email" type="email" name="email" placeholder="you@college.edu" required />
+        </div>
+
+        <div class="input-group">
+          <label for="password">Password</label>
+          <input id="password" type="password" name="password" placeholder="Enter password" required />
+        </div>
+
+        <button type="submit" class="btn btn-primary full">Login</button>
+      </form>
+
+      <div class="auth-foot">
+        <span>New student?</span>
+        <a href="/signup">Create account</a>
+      </div>
+
+      <div class="demo-note">
+        <strong>Admin demo:</strong>
+        <span>admin@campus.com / admin123</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="toastContainer" class="toast-container"></div>
+  <script src="/public/js/common.js"></script>
+  <script src="/public/js/auth.js"></script>
+</body>
+</html>

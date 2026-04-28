@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Campus Portal | Student Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/public/css/styles.css" />
+</head>
+<body class="dashboard-body">
+  <div class="app-shell">
+    <aside class="sidebar glass">
+      <div class="brand">Campus Portal</div>
+      <nav>
+        <a href="#" class="active">Dashboard</a>
+        <a href="#complaintFormCard">Raise Complaint</a>
+        <a href="#complaintTableCard">My Complaints</a>
+        <a href="#notificationsCard">Notifications</a>
+      </nav>
+      <div class="sidebar-footer">
+        <button id="themeToggleBtn" class="btn btn-secondary full">Toggle Theme</button>
+        <button id="logoutBtn" class="btn btn-danger full">Logout</button>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar glass">
+        <div>
+          <h1>Student Dashboard</h1>
+          <p class="muted">Submit, track, and manage your complaints.</p>
+        </div>
+        <div class="profile-badge" id="profileBadge">Loading...</div>
+      </header>
+
+      <section class="stats-grid" id="statsCards">
+        <article class="stat-card glass"><h3>Total</h3><p id="statTotal">0</p></article>
+        <article class="stat-card glass"><h3>Pending</h3><p id="statPending">0</p></article>
+        <article class="stat-card glass"><h3>Resolved</h3><p id="statResolved">0</p></article>
+        <article class="stat-card glass"><h3>High Priority</h3><p id="statHigh">0</p></article>
+      </section>
+
+      <section id="complaintFormCard" class="card glass">
+        <div class="card-head">
+          <h2>Raise New Complaint</h2>
+        </div>
+        <form id="complaintForm" class="grid-2">
+          <div class="input-group">
+            <label for="complaintTitle">Title</label>
+            <input id="complaintTitle" name="title" type="text" placeholder="Short issue title" required />
+          </div>
+          <div class="input-group">
+            <label for="complaintCategory">Category</label>
+            <select id="complaintCategory" name="category" required>
+              <option value="" selected disabled>Select category</option>
+              <option value="Electrical">Electrical</option>
+              <option value="WiFi / Network">WiFi / Network</option>
+              <option value="Lab Equipment">Lab Equipment</option>
+              <option value="Hostel">Hostel</option>
+              <option value="Cleanliness">Cleanliness</option>
+              <option value="Classroom">Classroom</option>
+              <option value="Canteen / Food">Canteen / Food</option>
+              <option value="Water Supply">Water Supply</option>
+              <option value="Library">Library</option>
+              <option value="Transport">Transport</option>
+              <option value="Security">Security</option>
+              <option value="Other">Others (Manual Entry)</option>
+            </select>
+          </div>
+          <div id="otherCategoryGroup" class="input-group full-span hidden">
+            <label for="otherCategory">Specify Other Category</label>
+            <input
+              id="otherCategory"
+              name="otherCategory"
+              type="text"
+              maxlength="60"
+              placeholder="Type custom category"
+            />
+          </div>
+          <div class="input-group full-span">
+            <label for="complaintDescription">Description</label>
+            <textarea id="complaintDescription" name="description" rows="4" placeholder="Describe the issue in detail" required></textarea>
+          </div>
+          <div class="full-span row-end">
+            <button type="submit" class="btn btn-primary">Submit Complaint</button>
+          </div>
+        </form>
+      </section>
+
+      <section id="complaintTableCard" class="card glass">
+        <div class="card-head split">
+          <h2>My Complaints</h2>
+          <div class="table-filters">
+            <input id="searchInput" type="text" placeholder="Search title" />
+            <select id="filterCategory">
+              <option value="">All Categories</option>
+              <option value="Electrical">Electrical</option>
+              <option value="WiFi / Network">WiFi / Network</option>
+              <option value="Lab Equipment">Lab Equipment</option>
+              <option value="Hostel">Hostel</option>
+              <option value="Cleanliness">Cleanliness</option>
+              <option value="Classroom">Classroom</option>
+              <option value="Canteen / Food">Canteen / Food</option>
+              <option value="Water Supply">Water Supply</option>
+              <option value="Library">Library</option>
+              <option value="Transport">Transport</option>
+              <option value="Security">Security</option>
+              <option value="Other">Other</option>
+            </select>
+            <select id="filterStatus">
+              <option value="">All Status</option>
+              <option>Pending</option>
+              <option>In Progress</option>
+              <option>Resolved</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="tableLoader" class="loader hidden"></div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Category</th>
+                <th>Status</th>
+                <th>Priority</th>
+                <th>Date</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="complaintsTableBody"></tbody>
+          </table>
+        </div>
+        <div id="emptyState" class="empty-state hidden">No complaints found for current filters.</div>
+      </section>
+
+      <section id="notificationsCard" class="card glass">
+        <div class="card-head">
+          <h2>Notification Area</h2>
+        </div>
+        <ul id="notificationList" class="activity-list"></ul>
+      </section>
+
+      <section class="card glass">
+        <div class="card-head">
+          <h2>Edit Profile</h2>
+        </div>
+        <form id="profileForm" class="grid-2">
+          <div class="input-group">
+            <label for="profileName">Name</label>
+            <input id="profileName" type="text" required />
+          </div>
+          <div class="input-group">
+            <label for="profileEmail">Email</label>
+            <input id="profileEmail" type="email" required />
+          </div>
+          <div class="full-span row-end">
+            <button class="btn btn-secondary" type="submit">Update Profile</button>
+          </div>
+        </form>
+      </section>
+    </main>
+  </div>
+
+  <div id="toastContainer" class="toast-container"></div>
+  <script src="/public/js/common.js"></script>
+  <script src="/public/js/dashboard.js"></script>
+</body>
+</html>

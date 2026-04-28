@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Campus Portal | Admin Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/public/css/styles.css" />
+</head>
+<body class="dashboard-body">
+  <div class="app-shell">
+    <aside class="sidebar glass">
+      <div class="brand">Campus Admin</div>
+      <nav>
+        <a href="#" class="active">Analytics</a>
+        <a href="#adminTableCard">Complaints</a>
+        <a href="#activityCard">Activity Logs</a>
+      </nav>
+      <div class="sidebar-footer">
+        <button id="themeToggleBtn" class="btn btn-secondary full">Toggle Theme</button>
+        <button id="exportCsvBtn" class="btn btn-primary full">Export CSV</button>
+        <button id="logoutBtn" class="btn btn-danger full">Logout</button>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar glass">
+        <div>
+          <h1>Admin Dashboard</h1>
+          <p class="muted">Monitor service quality and resolve campus issues fast.</p>
+        </div>
+        <div class="profile-badge" id="profileBadge">Admin</div>
+      </header>
+
+      <section class="stats-grid" id="adminStatsCards">
+        <article class="stat-card glass"><h3>Total</h3><p id="statTotal">0</p></article>
+        <article class="stat-card glass"><h3>Pending</h3><p id="statPending">0</p></article>
+        <article class="stat-card glass"><h3>Resolved</h3><p id="statResolved">0</p></article>
+        <article class="stat-card glass"><h3>High Priority</h3><p id="statHigh">0</p></article>
+      </section>
+
+      <section class="card glass">
+        <div class="card-head">
+          <h2>Monthly Complaint Trend</h2>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="complaintChart"></canvas>
+        </div>
+      </section>
+
+      <section id="adminTableCard" class="card glass">
+        <div class="card-head split">
+          <h2>All Complaints</h2>
+          <div class="table-filters">
+            <input id="searchInput" type="text" placeholder="Search title" />
+            <select id="filterCategory">
+              <option value="">All Categories</option>
+              <option value="Electrical">Electrical</option>
+              <option value="WiFi / Network">WiFi / Network</option>
+              <option value="Lab Equipment">Lab Equipment</option>
+              <option value="Hostel">Hostel</option>
+              <option value="Cleanliness">Cleanliness</option>
+              <option value="Classroom">Classroom</option>
+              <option value="Canteen / Food">Canteen / Food</option>
+              <option value="Water Supply">Water Supply</option>
+              <option value="Library">Library</option>
+              <option value="Transport">Transport</option>
+              <option value="Security">Security</option>
+              <option value="Other">Other</option>
+            </select>
+            <select id="filterStatus">
+              <option value="">All Status</option>
+              <option>Pending</option>
+              <option>In Progress</option>
+              <option>Resolved</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="tableLoader" class="loader hidden"></div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Student</th>
+                <th>Title</th>
+                <th>Category</th>
+                <th>Status</th>
+                <th>Priority</th>
+                <th>Date</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="complaintsTableBody"></tbody>
+          </table>
+        </div>
+        <div id="emptyState" class="empty-state hidden">No complaints found for current filters.</div>
+      </section>
+
+      <section id="activityCard" class="card glass">
+        <div class="card-head">
+          <h2>Recent Activity Logs</h2>
+        </div>
+        <ul id="activityList" class="activity-list"></ul>
+      </section>
+    </main>
+  </div>
+
+  <div id="toastContainer" class="toast-container"></div>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="/public/js/common.js"></script>
+  <script src="/public/js/admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,5 @@
+
+> campus-portal@1.0.0 start
+> node app.js
+
+Campus Portal running at http://localhost:3000
