@@ -13,6 +13,14 @@ async function createTables() {
   `);
 
   await run(`
+    CREATE TABLE IF NOT EXISTS sessions (
+      sid TEXT PRIMARY KEY,
+      data TEXT NOT NULL,
+      expires INTEGER NOT NULL
+    )
+  `);
+
+  await run(`
     CREATE TABLE IF NOT EXISTS complaints (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       user_id INTEGER NOT NULL,
@@ -230,6 +238,15 @@ async function initializeDatabase() {
   await seedDemoData();
 }
 
+async function cleanupExpiredSessions() {
+  try {
+    await run('DELETE FROM sessions WHERE expires < ?', [Date.now()]);
+  } catch (error) {
+    console.error('Error cleaning up expired sessions:', error);
+  }
+}
+
 module.exports = {
-  initializeDatabase
+  initializeDatabase,
+  cleanupExpiredSessions
 };
