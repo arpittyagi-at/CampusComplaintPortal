@@ -155,14 +155,54 @@
             <input id="profileName" type="text" required />
           </div>
           <div class="input-group">
-            <label for="profileEmail">Email</label>
-            <input id="profileEmail" type="email" readonly />
+            <label>Role</label>
+            <input type="text" id="profileRole" disabled />
           </div>
           <div class="full-span row-end">
             <button class="btn btn-secondary" type="submit">Update Profile</button>
           </div>
         </form>
       </section>
+
+      <section class="card glass">
+        <div class="card-head">
+          <h2>Security</h2>
+        </div>
+        <div style="display: flex; align-items: center; justify-content: space-between;">
+          <div>
+            <p style="margin: 0; font-weight: 500;">Change Password</p>
+            <p class="muted" style="margin: 0.25rem 0 0; font-size: 0.85rem;">Update your account password</p>
+          </div>
+          <button id="changePasswordBtn" class="btn btn-secondary" type="button">Change</button>
+        </div>
+      </section>
+
+      <div id="passwordModal" class="modal hidden">
+        <div class="modal-content glass">
+          <div class="modal-head">
+            <h3>Change Password</h3>
+            <button class="modal-close" data-close>×</button>
+          </div>
+          <form id="passwordForm" class="grid-1" style="gap: 1rem;">
+            <div class="input-group">
+              <label for="currentPassword">Current Password</label>
+              <input id="currentPassword" type="password" placeholder="Enter current password" required />
+            </div>
+            <div class="input-group">
+              <label for="newPassword">New Password</label>
+              <input id="newPassword" type="password" placeholder="Enter new password" required />
+            </div>
+            <div class="input-group">
+              <label for="confirmPassword">Confirm Password</label>
+              <input id="confirmPassword" type="password" placeholder="Confirm new password" required />
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-close>Cancel</button>
+              <button type="submit" class="btn btn-primary">Change Password</button>
+            </div>
+          </form>
+        </div>
+      </div>
     </main>
   </div>
 

@@ -86,7 +86,7 @@ async function loadProfile() {
   const user = result.user;
   document.getElementById('profileBadge').textContent = `${user.name} (${user.role})`;
   document.getElementById('profileName').value = user.name;
-  document.getElementById('profileEmail').value = user.email;
+  document.getElementById('profileRole').value = user.role.charAt(0).toUpperCase() + user.role.slice(1);
 }
 
 async function loadUrgentComplaints() {
@@ -270,10 +270,58 @@ async function handleRowAction(event) {
   }
 }
 
+async function changePassword(event) {
+  event.preventDefault();
+  const currentPassword = document.getElementById('currentPassword').value.trim();
+  const newPassword = document.getElementById('newPassword').value.trim();
+  const confirmPassword = document.getElementById('confirmPassword').value.trim();
+
+  if (!currentPassword || !newPassword || !confirmPassword) {
+    showToast('Please fill all password fields', 'error');
+    return;
+  }
+
+  if (newPassword !== confirmPassword) {
+    showToast('New passwords do not match', 'error');
+    return;
+  }
+
+  if (newPassword.length < 6) {
+    showToast('New password must be at least 6 characters', 'error');
+    return;
+  }
+
+  try {
+    await apiFetch('/api/auth/change-password', {
+      method: 'POST',
+      body: { currentPassword, newPassword }
+    });
+    showToast('Password changed successfully');
+    document.getElementById('passwordForm').reset();
+    closePasswordModal();
+  } catch (error) {
+    showToast(error.message, 'error');
+  }
+}
+
+function openPasswordModal() {
+  document.getElementById('passwordModal').classList.remove('hidden');
+}
+
+function closePasswordModal() {
+  document.getElementById('passwordModal').classList.add('hidden');
+  document.getElementById('passwordForm').reset();
+}
+
 function bindEvents() {
   document.getElementById('complaintForm').addEventListener('submit', submitComplaint);
   document.getElementById('profileForm').addEventListener('submit', updateProfile);
   document.getElementById('logoutBtn').addEventListener('click', logout);
+  document.getElementById('changePasswordBtn').addEventListener('click', openPasswordModal);
+  document.getElementById('passwordForm').addEventListener('submit', changePassword);
+  document.querySelectorAll('[data-close]').forEach(btn => {
+    btn.addEventListener('click', closePasswordModal);
+  });
 
   document.getElementById('searchInput').addEventListener('input', debounce(loadComplaints, 350));
   document.getElementById('filterCategory').addEventListener('change', loadComplaints);

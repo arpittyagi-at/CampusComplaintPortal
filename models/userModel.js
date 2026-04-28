@@ -23,9 +23,14 @@ function updateUserProfile(id, { name, email }) {
   return run('UPDATE users SET name = ? WHERE id = ?', [name, id]);
 }
 
+function updateUserPassword(id, hashedPassword) {
+  return run('UPDATE users SET password = ? WHERE id = ?', [hashedPassword, id]);
+}
+
 module.exports = {
   createUser,
   findUserByEmail,
   findUserById,
-  updateUserProfile
+  updateUserProfile,
+  updateUserPassword
 };

@@ -5,7 +5,8 @@ const {
   createUser,
   findUserByEmail,
   findUserById,
-  updateUserProfile
+  updateUserProfile,
+  updateUserPassword
 } = require('../models/userModel');
 const { logActivity } = require('../models/activityModel');
 const { ensureAuthenticated } = require('../middleware/auth');
@@ -102,6 +103,36 @@ router.put('/profile', ensureAuthenticated, async (req, res) => {
     return res.json({ message: 'Profile updated', user: req.session.user });
   } catch (error) {
     return res.status(500).json({ error: 'Failed to update profile' });
+  }
+});
+
+router.post('/change-password', ensureAuthenticated, async (req, res) => {
+  try {
+    const { currentPassword, newPassword } = req.body;
+
+    if (!currentPassword || !newPassword) {
+      return res.status(400).json({ error: 'Current and new passwords are required' });
+    }
+
+    if (newPassword.length < 6) {
+      return res.status(400).json({ error: 'New password must be at least 6 characters' });
+    }
+
+    const user = await findUserById(req.session.user.id);
+    const isMatch = await bcrypt.compare(currentPassword, user.password);
+
+    if (!isMatch) {
+      return res.status(401).json({ error: 'Current password is incorrect' });
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    await updateUserPassword(req.session.user.id, hashedPassword);
+
+    await logActivity(`Password changed: ${req.session.user.email}`, req.session.user.id);
+
+    return res.json({ message: 'Password changed successfully' });
+  } catch (error) {
+    return res.status(500).json({ error: 'Failed to change password' });
   }
 });
 
